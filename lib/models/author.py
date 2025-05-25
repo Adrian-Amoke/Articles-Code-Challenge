@@ -59,3 +59,34 @@ class Author:
         cursor.execute("SELECT id, title, author_id, magazine_id FROM articles WHERE author_id = ?", (self.id,))
         rows = cursor.fetchall()
         return [Article(id=row[0], title=row[1], author_id=row[2], magazine_id=row[3]) for row in rows]
+
+    def magazines(self):
+        from lib.models.magazine import Magazine
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT DISTINCT m.id, m.name, m.category FROM magazines m
+            JOIN articles a ON m.id = a.magazine_id
+            WHERE a.author_id = ?
+        """, (self.id,))
+        rows = cursor.fetchall()
+        return [Magazine(id=row[0], name=row[1], category=row[2]) for row in rows]
+
+    @classmethod
+    def author_with_most_articles(cls):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT authors.id, authors.name, COUNT(articles.id) as article_count
+            FROM authors
+            JOIN articles ON authors.id = articles.author_id
+            GROUP BY authors.id
+            ORDER BY article_count DESC
+            LIMIT 1
+        """)
+        row = cursor.fetchone()
+        if row:
+            author = cls(id=row[0], name=row[1])
+            author.article_count = row[2]  # optional attribute for count
+            return author
+        return None
