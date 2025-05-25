@@ -90,3 +90,20 @@ class Author:
             author.article_count = row[2]  # optional attribute for count
             return author
         return None
+
+    def add_article(self, magazine, title):
+        from lib.models.article import Article
+        article = Article(title=title, author_id=self.id, magazine_id=magazine.id)
+        article.save()
+        return article
+
+    def topic_areas(self):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT DISTINCT m.category FROM magazines m
+            JOIN articles a ON m.id = a.magazine_id
+            WHERE a.author_id = ?
+        """, (self.id,))
+        rows = cursor.fetchall()
+        return [row[0] for row in rows]

@@ -122,3 +122,38 @@ class Magazine:
             magazine.article_count = row[3]  # optional attribute for count
             result.append(magazine)
         return result
+
+    def contributors(self):
+        from lib.models.author import Author
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT DISTINCT au.id, au.name FROM authors au
+            JOIN articles a ON au.id = a.author_id
+            WHERE a.magazine_id = ?
+        """, (self.id,))
+        rows = cursor.fetchall()
+        return [Author(id=row[0], name=row[1]) for row in rows]
+
+    def article_titles(self):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT title FROM articles WHERE magazine_id = ?
+        """, (self.id,))
+        rows = cursor.fetchall()
+        return [row[0] for row in rows]
+
+    def contributing_authors(self):
+        from lib.models.author import Author
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT au.id, au.name FROM authors au
+            JOIN articles a ON au.id = a.author_id
+            WHERE a.magazine_id = ?
+            GROUP BY au.id
+            HAVING COUNT(a.id) > 2
+        """, (self.id,))
+        rows = cursor.fetchall()
+        return [Author(id=row[0], name=row[1]) for row in rows]
