@@ -1,53 +1,59 @@
 # Articles-Code-Challenge
 
 ## Project Description
-This project manages articles, authors, and magazines using a SQLite database backend. It provides Python models for `Article`, `Author`, and `Magazine` with relationships between them, allowing for creation, querying, and updating of records.
+Welcome to the Articles-Code-Challenge project! This is a simple Python application that helps you manage articles, authors, and magazines using a lightweight SQLite database. The project provides easy-to-use Python classes for working with articles, authors, and magazines, letting you create, update, and query your data effortlessly.
 
 ## Installation
 
-1. Ensure you have Python 3.7+ installed.
-2. Install [Pipenv](https://pipenv.pypa.io/en/latest/) for dependency management:
-   ```bash
-   pip install pipenv
-   ```
-3. Install project dependencies:
-   ```bash
-   pipenv install
-   ```
-4. Activate the virtual environment:
-   ```bash
-   pipenv shell
-   ```
+To get started, make sure you have Python 3.7 or higher installed on your machine. We use Pipenv to manage dependencies, so if you don't have it yet, you can install it with:
+
+```bash
+pip install pipenv
+```
+
+Once Pipenv is installed, you can install the project dependencies by running:
+
+```bash
+pipenv install
+```
+
+After that, activate the virtual environment with:
+
+```bash
+pipenv shell
+```
 
 ## Database Setup
 
-The project uses SQLite as the database, with the database file named `articles.db`. The connection is handled via the `lib/db/connection.py` module.
+This project uses SQLite for its database, which means you don't need to set up a separate database server. The database file is named `articles.db` and is located in the project root.
 
-To set up the database schema and seed data, you may need to run the appropriate scripts or commands (not provided in this repository). Ensure the `articles.db` file is present in the project root or update the connection path accordingly.
+If you want to initialize the database schema or seed it with data, you can use the files in `lib/db/schema.sql` and `lib/db/seed.py`. Note that the scripts directory contains placeholders for setup and query scripts, but they are currently empty.
 
 ## Usage Overview
 
-The project provides Python classes to interact with the database:
+The core of the project revolves around three Python classes:
 
-- `Article`: Represents an article with attributes like title, author, and magazine.
-- `Author`: Represents an author and includes methods to retrieve their articles and magazines.
-- `Magazine`: Represents a magazine with a name and category, and methods to get related articles and authors.
+- `Article`: Represents an article with a title, author, and magazine.
+- `Author`: Represents an author and provides methods to get their articles and magazines.
+- `Magazine`: Represents a magazine with a name and category, along with methods to retrieve related articles and authors.
 
-These models support saving new records, updating existing ones, and querying by various attributes.
+These classes make it easy to interact with your data, whether you're adding new records or fetching existing ones.
 
 ## Running Tests
 
-Tests are located in the `tests/` directory and cover the models for articles, authors, and magazines.
+Tests for the project are located in the `tests/` directory and cover the main models: articles, authors, and magazines.
 
-To run the tests, ensure you are in the virtual environment and run:
+To run the tests, first make sure you're inside the virtual environment, then run:
 
 ```bash
 pytest
 ```
 
-Make sure `pytest` is installed in your environment (it should be included in the Pipfile if used).
+If you don't have `pytest` installed, you can add it to your environment using Pipenv.
 
 ## Project Structure
+
+Here's a quick look at the project structure:
 
 ```
 .
@@ -75,5 +81,6 @@ Make sure `pytest` is installed in your environment (it should be included in th
 
 ## Notes
 
-- The `scripts/` directory contains scripts for database setup and running queries, but these files appear to be empty or placeholders.
-- The database schema and seed files are located in `lib/db/schema.sql` and `lib/db/seed.py` respectively, which can be used to initialize the database.
+- The `scripts/` directory currently contains empty placeholder files for database setup and queries.
+- You can use the `lib/db/schema.sql` and `lib/db/seed.py` files to initialize and seed the database as needed.
+
